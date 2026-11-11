@@ -1,0 +1,34 @@
+groups:
+  - name: agentsquare_alerts
+    rules:
+      - alert: AgentSquareRoundLagHigh
+        expr: agentsquare_round_lag_seconds > 60
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Hourly round clearing lag exceeded 60s"
+
+      - alert: AgentSquareRaftLeaderChurn
+        expr: increase(agentsquare_raft_leader_changes_total[10m]) > 2
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Frequent Raft leader elections detected"
+
+      - alert: AgentSquareProjectionLag
+        expr: agentsquare_projection_lag_records > 100
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Read-model SQL projection is lagging behind ledger head"
+
+      - alert: AgentSquareOrderRejectionSpike
+        expr: sum(rate(agentsquare_orders_total{result!="accepted"}[5m])) > 10
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Spike in rejected order envelopes"

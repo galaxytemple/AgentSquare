@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-race:
+    name: Unit, Integration & Race Detector
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.23"
+      - name: Verify zero-CGO & run tests with race detector
+        run: go test -race -v ./...
+
+  conformance:
+    name: Protocol Conformance Vectors (In-Process & HTTP)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.23"
+      - name: Run conformance CLI
+        run: go run ./cmd/agentsquare conformance --dir spec/test-vectors
+      - name: Run HTTP transport conformance suite
+        run: go test -v -run TestConformanceOverHTTP ./conformance
+
+  fuzz-and-benchmark:
+    name: Clearing Fuzzing & 10k-Order Benchmark
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.23"
+      - name: Fuzz call-auction clearing conservation
+        run: go test -fuzz=FuzzClearingConservation -fuzztime=10s ./clearing
+      - name: Benchmark 10,000 orders per round clearing
+        run: go test -run=^$ -bench=BenchmarkClear10kOrders -benchmem ./clearing
+
+  cross-compile-and-wasm:
+    name: Static Cross-Compile (linux/darwin × amd64/arm64) & WASM
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.23"
+      - name: Build linux/amd64 static binary
+        run: CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o dist/agentsquare-linux-amd64 ./cmd/agentsquare
+      - name: Build linux/arm64 static binary
+        run: CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -trimpath -ldflags="-s -w" -o dist/agentsquare-linux-arm64 ./cmd/agentsquare
+      - name: Build darwin/amd64 static binary
+        run: CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o dist/agentsquare-darwin-amd64 ./cmd/agentsquare
+      - name: Build darwin/arm64 static binary
+        run: CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 go build -trimpath -ldflags="-s -w" -o dist/agentsquare-darwin-arm64 ./cmd/agentsquare
+      - name: Build browser WASM verification core
+        run: GOOS=js GOARCH=wasm go build -o web/viewer/agentsquare.wasm ./cmd/agentsquare-wasm

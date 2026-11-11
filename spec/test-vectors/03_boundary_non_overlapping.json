@@ -1,0 +1,326 @@
+{
+  "name": "03_boundary_non_overlapping",
+  "description": "Boundary vector: buy limit $6 below sell limit $8 results in zero executable volume and full escrow release.",
+  "server_seed_hex": "010000000000000000000000000000000000000000000000000000000000005b",
+  "clock_unix": 1794232800,
+  "reference_prices": {
+    "copper": 10
+  },
+  "initial_balances": {
+    "ag_527fa20da1f8d13b7069f00a829c564e": {
+      "copper": 20,
+      "usd": 200
+    },
+    "ag_7414148a14175f6350b85c0e19be53c1": {
+      "copper": 20,
+      "usd": 200
+    },
+    "ag_827dc319e3efa6d6f1f5fb4ada76dfa8": {
+      "copper": 20,
+      "usd": 200
+    },
+    "ag_daddb0c69d28c7079a2162b1b1e34876": {
+      "copper": 20,
+      "usd": 200
+    }
+  },
+  "manifest": {
+    "protocol": "agentsquare/1.0",
+    "supported_versions": [
+      "1.0"
+    ],
+    "game_id": "city-2026w46",
+    "assets": [
+      {
+        "id": "copper",
+        "qty_unit": 1
+      }
+    ],
+    "settlement_unit": {
+      "id": "usd",
+      "tick": 1
+    },
+    "round": {
+      "interval": "PT1H",
+      "anchor": "2026-11-09T00:00:00Z",
+      "carry_over": false
+    },
+    "price_band": {
+      "reference": "shop",
+      "lower_pct": 50,
+      "upper_pct": 100
+    },
+    "market_data": {
+      "pre_clear": "indicative"
+    },
+    "fee_bps": 0,
+    "admission": "open",
+    "ledger": {
+      "genesis_hash": "",
+      "public": "after-clear"
+    },
+    "server_pubkey": "ed25519:63de5c95aacdb53b2a9e7fcb472573f5f4d54e14ace17410c981b1f716a5ebad",
+    "admin_pubkeys": [
+      "ed25519:63de5c95aacdb53b2a9e7fcb472573f5f4d54e14ace17410c981b1f716a5ebad"
+    ]
+  },
+  "ledger_before": [],
+  "inputs": [
+    {
+      "action": "envelope",
+      "envelope": {
+        "version": "1.0",
+        "game_id": "city-2026w46",
+        "from": "ag_7414148a14175f6350b85c0e19be53c1",
+        "to": "server",
+        "type": "agent.register",
+        "timestamp": 1794232800,
+        "nonce": "reg-a",
+        "corr_id": "c-reg-a",
+        "payload": {
+          "pubkey": "ed25519:00550144240ff384deaf25c99a94ade8f3d653b33a61750f2582152d301df397"
+        },
+        "signature": "ed25519:10dcffc86e3edb68d52482c8b8f20e9f9e3e912c61cca0ac0a407dbfa03c9cf26f8c6c522e7c376ffefc131f6aa385bbf0f58d06375d021064cbddb324c25f06"
+      },
+      "expect_accepted": true
+    },
+    {
+      "action": "envelope",
+      "envelope": {
+        "version": "1.0",
+        "game_id": "city-2026w46",
+        "from": "ag_827dc319e3efa6d6f1f5fb4ada76dfa8",
+        "to": "server",
+        "type": "agent.register",
+        "timestamp": 1794232800,
+        "nonce": "reg-b",
+        "corr_id": "c-reg-b",
+        "payload": {
+          "pubkey": "ed25519:4089052fb71ddaf2f3ecb3a322b0fa3107ae92dfe921fc634db994d7c5c4f99d"
+        },
+        "signature": "ed25519:3c382a3c8f8f0294103c8a5ce870456936c20ba4271c4dbb5a6b607288554c9894de4fddc3c2d228880dafb3ff1ac3e6c6af6ac2e52a60ce983dd1e835be080c"
+      },
+      "expect_accepted": true
+    },
+    {
+      "action": "envelope",
+      "envelope": {
+        "version": "1.0",
+        "game_id": "city-2026w46",
+        "from": "ag_7414148a14175f6350b85c0e19be53c1",
+        "to": "server",
+        "type": "place_order",
+        "timestamp": 1794232800,
+        "nonce": "o1",
+        "corr_id": "c-o1",
+        "payload": {
+          "asset": "copper",
+          "side": "buy",
+          "limit_price": 6,
+          "qty": 5
+        },
+        "signature": "ed25519:15d930b369e58cbc4df479937dce6e2ebc18c94cf6c43564b88eee1700094c6e9c9ab6374becb88e9b1ef079307517e335ebfd7fbe156b5de715449a489a0300"
+      },
+      "expect_accepted": true
+    },
+    {
+      "action": "envelope",
+      "envelope": {
+        "version": "1.0",
+        "game_id": "city-2026w46",
+        "from": "ag_827dc319e3efa6d6f1f5fb4ada76dfa8",
+        "to": "server",
+        "type": "place_order",
+        "timestamp": 1794232800,
+        "nonce": "o2",
+        "corr_id": "c-o2",
+        "payload": {
+          "asset": "copper",
+          "side": "sell",
+          "limit_price": 8,
+          "qty": 5
+        },
+        "signature": "ed25519:6bffa5d62a5571b3fa8538868775c786f2f7881b065e50f356f80e734aa752a1b6b5e45c78b47bb719b30a00eb6259bb04cf74b85b7e604c8488e7db66ac3d0c"
+      },
+      "expect_accepted": true
+    },
+    {
+      "action": "clear_round"
+    }
+  ],
+  "expected_fills": [],
+  "expected_ledger_after": [
+    {
+      "seq": 1,
+      "prev_hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "game_id": "city-2026w46",
+      "type": "genesis",
+      "body": {
+        "manifest_hash": "sha256:ec55e348d667205e552afed4cf8f70852f74b20278697872053d473741bf3678"
+      },
+      "server_sig": "ed25519:791d5f4b3c2869737bf2b36bc21a7f302325a2a2c67309859717b7a1bad6656d6ab9f1e508e6ecc4ed9ac4a7834f8d8db539b53e0bf3874f1e09934a11572804",
+      "hash": "sha256:888679dc274b3a28b20f3482a93d255e7a08e16c8b9aa5ef36df60f7b2fe3a41"
+    },
+    {
+      "seq": 2,
+      "prev_hash": "sha256:888679dc274b3a28b20f3482a93d255e7a08e16c8b9aa5ef36df60f7b2fe3a41",
+      "game_id": "city-2026w46",
+      "type": "agent.admitted",
+      "body": {
+        "agent_id": "ag_7414148a14175f6350b85c0e19be53c1",
+        "pubkey": "ed25519:00550144240ff384deaf25c99a94ade8f3d653b33a61750f2582152d301df397"
+      },
+      "server_sig": "ed25519:cf118af92833323ffa1cd95a36a6f15907aa571596b141f6013078985e518779761ac3e3ecd3515cecac1a7ad44a9679d706768d54d11ac907b0866e68dfbb0b",
+      "hash": "sha256:d551b75eb74a24373ca1c1c9108545efd067870bf1d6d15c955aed3b1678a689"
+    },
+    {
+      "seq": 3,
+      "prev_hash": "sha256:d551b75eb74a24373ca1c1c9108545efd067870bf1d6d15c955aed3b1678a689",
+      "game_id": "city-2026w46",
+      "type": "balance.credit",
+      "body": {
+        "agent_id": "ag_7414148a14175f6350b85c0e19be53c1",
+        "asset": "copper",
+        "qty": 20,
+        "reason": "deck_grant"
+      },
+      "server_sig": "ed25519:8b1975c2271eb1010b8b2311aa81837682f54a27141c4fefca9958f07daefd4004cfb3b96a7beee6f07f379529ca5bd5943920935e513d7bf3fdccfd96faf807",
+      "hash": "sha256:785cf875d76b451832f043b37299ff38672fc36ddf6f9c7990820ba308aed920"
+    },
+    {
+      "seq": 4,
+      "prev_hash": "sha256:785cf875d76b451832f043b37299ff38672fc36ddf6f9c7990820ba308aed920",
+      "game_id": "city-2026w46",
+      "type": "balance.credit",
+      "body": {
+        "agent_id": "ag_7414148a14175f6350b85c0e19be53c1",
+        "asset": "usd",
+        "qty": 200,
+        "reason": "deck_grant"
+      },
+      "server_sig": "ed25519:60794b8fc7dbe57675fc4c6fb5d041461bf7761451279aa8109499bcd083d6eea0cbc8e02def396b9b69d78cd8e54be716442ab5aafca0055bd136cc6256ed0e",
+      "hash": "sha256:1fe7a6022f8c99b2e5194b6887d158d5002abe001d1f7d05256829d81eef99a8"
+    },
+    {
+      "seq": 5,
+      "prev_hash": "sha256:1fe7a6022f8c99b2e5194b6887d158d5002abe001d1f7d05256829d81eef99a8",
+      "game_id": "city-2026w46",
+      "type": "agent.admitted",
+      "body": {
+        "agent_id": "ag_827dc319e3efa6d6f1f5fb4ada76dfa8",
+        "pubkey": "ed25519:4089052fb71ddaf2f3ecb3a322b0fa3107ae92dfe921fc634db994d7c5c4f99d"
+      },
+      "server_sig": "ed25519:32e0d8340c5f8074b0a915ccd1b9dbc18a4e8934d3af7b1cdb0a7a868a9c1ebd652475e745dbbe2a9420b71a53422b3a18ad0095b0158e514b641d1ce75bf902",
+      "hash": "sha256:e85ec00a0af647b0efc18b295228a5345896974e21f047323a3ee7dca2ee37d8"
+    },
+    {
+      "seq": 6,
+      "prev_hash": "sha256:e85ec00a0af647b0efc18b295228a5345896974e21f047323a3ee7dca2ee37d8",
+      "game_id": "city-2026w46",
+      "type": "balance.credit",
+      "body": {
+        "agent_id": "ag_827dc319e3efa6d6f1f5fb4ada76dfa8",
+        "asset": "copper",
+        "qty": 20,
+        "reason": "deck_grant"
+      },
+      "server_sig": "ed25519:59a0d00cf7f4450bab155e702a756ff6b28afad4078d1846d9fbc6e68e5547d259f1aea27d79b0c88b6c0b8810dc667a7acd37dd032a4a6e139725a71cb29c00",
+      "hash": "sha256:52a95068075db677b25538563a73b1b418cbe53003505dc81a5eb33a718c53ac"
+    },
+    {
+      "seq": 7,
+      "prev_hash": "sha256:52a95068075db677b25538563a73b1b418cbe53003505dc81a5eb33a718c53ac",
+      "game_id": "city-2026w46",
+      "type": "balance.credit",
+      "body": {
+        "agent_id": "ag_827dc319e3efa6d6f1f5fb4ada76dfa8",
+        "asset": "usd",
+        "qty": 200,
+        "reason": "deck_grant"
+      },
+      "server_sig": "ed25519:512020c3dbf52413dbe47061daaba5b783dd4bf6748f70aa08a9d7cdcb8bbbaa7aa2098ddb1b565ae9e46cb5258a3504eac3a54222d078dfd399dc87cb07da03",
+      "hash": "sha256:41f46530b72cbdc1a729f4872e1719509ca4cb12bec0cff99db65ea0873f5bd2"
+    },
+    {
+      "seq": 8,
+      "prev_hash": "sha256:41f46530b72cbdc1a729f4872e1719509ca4cb12bec0cff99db65ea0873f5bd2",
+      "game_id": "city-2026w46",
+      "type": "order_accepted",
+      "body": {
+        "order_id": "ord_1_1",
+        "round": 1,
+        "agent_id": "ag_7414148a14175f6350b85c0e19be53c1",
+        "asset": "copper",
+        "side": "buy",
+        "limit_price": 6,
+        "qty": 5,
+        "envelope_sig": "ed25519:15d930b369e58cbc4df479937dce6e2ebc18c94cf6c43564b88eee1700094c6e9c9ab6374becb88e9b1ef079307517e335ebfd7fbe156b5de715449a489a0300"
+      },
+      "server_sig": "ed25519:ba702cf244cc30ce875ab15686f03800caab77a655bcba5e9a4066f28d2988da50ce4628c387664a682fcfbaf4db7eaf83ebd25149b00bcab5954d26eb30ec02",
+      "hash": "sha256:6daeb3785b57ec1fee1393931368e1b95c9aad7c22b9f90a2eefef7beb033b9a"
+    },
+    {
+      "seq": 9,
+      "prev_hash": "sha256:6daeb3785b57ec1fee1393931368e1b95c9aad7c22b9f90a2eefef7beb033b9a",
+      "game_id": "city-2026w46",
+      "type": "order_accepted",
+      "body": {
+        "order_id": "ord_1_2",
+        "round": 1,
+        "agent_id": "ag_827dc319e3efa6d6f1f5fb4ada76dfa8",
+        "asset": "copper",
+        "side": "sell",
+        "limit_price": 8,
+        "qty": 5,
+        "envelope_sig": "ed25519:6bffa5d62a5571b3fa8538868775c786f2f7881b065e50f356f80e734aa752a1b6b5e45c78b47bb719b30a00eb6259bb04cf74b85b7e604c8488e7db66ac3d0c"
+      },
+      "server_sig": "ed25519:a684197a417261bf7a745100a058e4055bd3b11c4234f321b42b3f2d7e0fa7333eddc0c9b3ec55425f39bb0ac1325cf957c8a843a533a8ee56259fd58b00060f",
+      "hash": "sha256:7ee0ab44271920b3123683e8ed053cc6d18e878f8d6e63c17978c798ebfa621a"
+    },
+    {
+      "seq": 10,
+      "prev_hash": "sha256:7ee0ab44271920b3123683e8ed053cc6d18e878f8d6e63c17978c798ebfa621a",
+      "game_id": "city-2026w46",
+      "type": "round_sealed",
+      "body": {
+        "round": 1,
+        "cutoff_time": 1794232800,
+        "ref_prices": {
+          "copper": 10
+        }
+      },
+      "server_sig": "ed25519:4870f12cedfe5d1881a05d4981887f43eccc852e4f64f1989baf4cd6d14da50d2330d95f68bed01eb2e78a6759291c9354f32cf46874d5310c2d22144dba9906",
+      "hash": "sha256:3853eb54323f5c06cb239bb93478d7e92b2c5f9e2f6daee562c8510d2c79ad09"
+    },
+    {
+      "seq": 11,
+      "prev_hash": "sha256:3853eb54323f5c06cb239bb93478d7e92b2c5f9e2f6daee562c8510d2c79ad09",
+      "game_id": "city-2026w46",
+      "type": "clear",
+      "body": {
+        "round": 1,
+        "asset": "copper",
+        "clearing_price": 0,
+        "volume": 0,
+        "prev_price": 0,
+        "reference_price": 10,
+        "seed_sig": "ed25519:27b8bc4733cb88ead0767afb86327ed44f60a14224fefb92c8cb8de2c5cd553d2fc6fa56a0c0cb83a4110aac40a1e36c24c6a9a1201e223a69cc00b0ca11e305"
+      },
+      "server_sig": "ed25519:97eafc1afd805303334d83e36b996634a076f31626e5208696f4a8921f0bae1a238a0eeb6b68ec5e9e36d7c2afc1d6dd754a43a1210b12751079ca448b408203",
+      "hash": "sha256:4535aefc33f882455c8c9cfafe72bd1c4a4df68ba67123e058d2c4466d36239b"
+    },
+    {
+      "seq": 12,
+      "prev_hash": "sha256:4535aefc33f882455c8c9cfafe72bd1c4a4df68ba67123e058d2c4466d36239b",
+      "game_id": "city-2026w46",
+      "type": "settle",
+      "body": {
+        "round": 1,
+        "carry_over": false
+      },
+      "server_sig": "ed25519:eb9c4768788b7c8fb6239cf5e014489be3ad489c223d00563f5aa16e5777a6a41f2f17868fea0726ac7d3f5f88f3d816919c415232f437ac476ea0a8c9ddb005",
+      "hash": "sha256:c92e15e64e32e9c16911f66a65a038edf19ee039a62f7bab8c8252d09bfe7dd1"
+    }
+  ],
+  "expected_state_hash": "sha256:c307650111e0f38d20f2519df76b88c20f1965752bd1ad260761133c1fcd6b35"
+}

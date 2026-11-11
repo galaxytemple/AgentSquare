@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/galaxytemple/AgentSquare/spec/schemas/records.schema.json",
+  "title": "AgentSquare Ledger Record",
+  "type": "object",
+  "required": [
+    "seq",
+    "prev_hash",
+    "game_id",
+    "type",
+    "body",
+    "server_sig",
+    "hash"
+  ],
+  "properties": {
+    "seq": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "prev_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "game_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "genesis",
+        "agent.admitted",
+        "key.rotate",
+        "balance.credit",
+        "balance.debit",
+        "order_accepted",
+        "order_cancelled",
+        "order_replaced",
+        "round_sealed",
+        "clear",
+        "fill",
+        "settle",
+        "snapshot_checkpoint",
+        "manifest.update",
+        "admin.halt",
+        "admin.resume",
+        "admin.moderate",
+        "ext"
+      ]
+    },
+    "body": {
+      "type": "object"
+    },
+    "server_sig": {
+      "type": "string",
+      "pattern": "^ed25519:[0-9a-f]{128}$"
+    },
+    "hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    }
+  }
+}

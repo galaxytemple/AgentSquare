@@ -1,0 +1,17 @@
+# Third-Party Notices
+
+AgentSquare (`github.com/galaxytemple/AgentSquare`) is licensed under the MIT License (`LICENSE`).
+The AgentSquare Specification (`spec/`) is licensed under Creative Commons Attribution 4.0 International (`spec/LICENSE`).
+
+## Runtime Dependencies
+
+1. **Go Standard Library (`crypto/ed25519`, `crypto/sha256`, `crypto/hmac`, `net/http`, `encoding/json`, `log/slog`)**
+   - License: BSD-3-Clause
+   - URL: https://go.dev/LICENSE
+
+## Optional Adapter Ecosystem Compatibility Notes (Spec C7)
+
+- **HashiCorp Raft (`github.com/hashicorp/raft`)**: MPL-2.0 (file-level copyleft; importing unmodified packages in separate sub-modules is compatible with MIT).
+- **NATS JetStream (`github.com/nats-io/nats.go`)**: Apache-2.0.
+- **Kafka Client (`github.com/twmb/franz-go`)**: BSD-3-Clause.
+- **Lightweight Charts (Viewer UI)**: Apache-2.0.

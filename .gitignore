@@ -1,0 +1,23 @@
+# Binaries and build outputs
+/agentsquare
+/bin/
+/dist/
+*.exe
+*.out
+*.test
+*.prof
+
+# Local runtime data
+*.db
+*.db-shm
+*.db-wal
+*.jsonl
+/data/
+
+# OS & editor files
+.DS_Store
+.idea/
+.vscode/
+
+# Reference design docs
+docs/local

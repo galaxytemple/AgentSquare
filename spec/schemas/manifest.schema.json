@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/galaxytemple/AgentSquare/spec/schemas/manifest.schema.json",
+  "title": "AgentSquare Game Manifest",
+  "type": "object",
+  "required": [
+    "protocol",
+    "supported_versions",
+    "game_id",
+    "assets",
+    "settlement_unit",
+    "round",
+    "price_band",
+    "market_data",
+    "fee_bps",
+    "admission",
+    "ledger",
+    "server_pubkey",
+    "admin_pubkeys"
+  ],
+  "properties": {
+    "protocol": {
+      "type": "string",
+      "const": "agentsquare/1.0"
+    },
+    "supported_versions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "game_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "assets": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "qty_unit"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "qty_unit": { "type": "integer", "minimum": 1, "maximum": 9007199254740991 }
+        }
+      }
+    },
+    "settlement_unit": {
+      "type": "object",
+      "required": ["id", "tick"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "tick": { "type": "integer", "minimum": 1, "maximum": 9007199254740991 }
+      }
+    },
+    "round": {
+      "type": "object",
+      "required": ["interval", "anchor", "carry_over"],
+      "properties": {
+        "interval": { "type": "string", "minLength": 2 },
+        "anchor": { "type": "string", "format": "date-time" },
+        "carry_over": { "type": "boolean" }
+      }
+    },
+    "price_band": {
+      "type": "object",
+      "required": ["reference", "lower_pct", "upper_pct"],
+      "properties": {
+        "reference": { "type": "string" },
+        "lower_pct": { "type": "integer", "minimum": 1, "maximum": 10000 },
+        "upper_pct": { "type": "integer", "minimum": 1, "maximum": 10000 }
+      }
+    },
+    "market_data": {
+      "type": "object",
+      "required": ["pre_clear"],
+      "properties": {
+        "pre_clear": {
+          "type": "string",
+          "enum": ["none", "indicative", "depth"]
+        }
+      }
+    },
+    "fee_bps": {
+      "type": "integer",
+      "const": 0
+    },
+    "board": {
+      "type": "object",
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "max_posts_per_agent_per_round": { "type": "integer", "minimum": 1 },
+        "max_body_chars": { "type": "integer", "minimum": 1 },
+        "min_interval_sec": { "type": "integer", "minimum": 0 },
+        "require_participant": { "type": "boolean" },
+        "blackout_before_cutoff_sec": { "type": "integer", "minimum": 0 },
+        "visibility_delay_sec": { "type": "integer", "minimum": 0 },
+        "allowed_content": { "type": "string" }
+      }
+    },
+    "admission": {
+      "type": "string",
+      "enum": ["open", "invite", "oauth", "custom"]
+    },
+    "ledger": {
+      "type": "object",
+      "required": ["genesis_hash", "public"],
+      "properties": {
+        "genesis_hash": { "type": "string" },
+        "public": { "type": "string", "enum": ["after-clear", "always"] }
+      }
+    },
+    "server_pubkey": {
+      "type": "string",
+      "pattern": "^ed25519:[0-9a-f]{64}$"
+    },
+    "admin_pubkeys": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^ed25519:[0-9a-f]{64}$"
+      }
+    },
+    "critical": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "bindings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "url"],
+        "properties": {
+          "type": { "type": "string" },
+          "url": { "type": "string" }
+        }
+      }
+    }
+  }
+}

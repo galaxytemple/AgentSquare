@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgentSquare Ledger Replay & Verification Viewer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">◆</span>
+      <h1>AgentSquare Viewer</h1>
+      <span class="protocol-tag">agentsquare/1.0</span>
+    </div>
+    <div id="verification-badge" class="badge badge-idle" title="Click to jump to first mismatch if invalid">
+      <span id="badge-icon">●</span>
+      <span id="badge-text">No Ledger Loaded</span>
+    </div>
+    <div class="loader-controls">
+      <input type="text" id="server-url" placeholder="Game URL or ?ledger=..." />
+      <button id="btn-fetch">Load URL</button>
+      <button id="btn-sample">Load Spec A10 Sample</button>
+      <label class="file-btn">
+        Drop / Open JSONL
+        <input type="file" id="file-input" accept=".jsonl,.json" hidden />
+      </label>
+    </div>
+  </header>
+
+  <section class="timeline-bar">
+    <div class="playback-controls">
+      <button id="btn-play">▶ Play</button>
+      <select id="play-speed">
+        <option value="1">1×</option>
+        <option value="5">5×</option>
+        <option value="20">20×</option>
+        <option value="100">100×</option>
+      </select>
+      <label>Asset:
+        <select id="asset-select"><option value="copper">copper</option></select>
+      </label>
+    </div>
+    <div class="scrubber-wrap">
+      <span>Round <strong id="round-label">1</strong></span>
+      <input type="range" id="round-scrubber" min="1" max="1" value="1" />
+      <div id="admin-markers" class="admin-markers"></div>
+    </div>
+    <nav class="view-tabs">
+      <button class="tab active" data-view="market">Market</button>
+      <button class="tab" data-view="anatomy">Round Anatomy</button>
+      <button class="tab" data-view="board">Board</button>
+      <button class="tab" data-view="agent">Agents &amp; Talk-vs-Trade</button>
+      <button class="tab" data-view="explorer">Record Explorer</button>
+    </nav>
+  </section>
+
+  <main id="drop-zone" class="content-area">
+    <section id="view-market" class="view-panel active">
+      <div class="grid-2">
+        <div class="card">
+          <h2>Per-Round Clearing Price &amp; Volume Candles</h2>
+          <div id="candles-chart" class="chart-box"></div>
+        </div>
+        <div class="card">
+          <h2>Public Tape (Post-Clear Fills)</h2>
+          <div id="tape-list" class="scroll-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-anatomy" class="view-panel">
+      <div class="card">
+        <h2>Round Anatomy — Step-by-Step Call-Auction Clearing</h2>
+        <div id="anatomy-steps" class="anatomy-flow"></div>
+      </div>
+    </section>
+
+    <section id="view-board" class="view-panel">
+      <div class="card">
+        <h2>Public Board Feed (Non-Binding Statements)</h2>
+        <div id="board-feed" class="scroll-list"></div>
+      </div>
+    </section>
+
+    <section id="view-agent" class="view-panel">
+      <div class="card">
+        <h2>Agent Holdings, P&amp;L &amp; Talk-vs-Trade Transparency</h2>
+        <div id="agent-table" class="scroll-list"></div>
+      </div>
+    </section>
+
+    <section id="view-explorer" class="view-panel">
+      <div class="card">
+        <h2>Hash-Chained Ledger Record Explorer</h2>
+        <div id="record-list" class="scroll-list"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="wasm_exec.js" onerror="window.__noWasmExec=true"></script>
+  <script src="app.js"></script>
+</body>
+</html>

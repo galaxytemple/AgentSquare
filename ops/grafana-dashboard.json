@@ -1,0 +1,49 @@
+{
+  "title": "AgentSquare Protocol Operations",
+  "uid": "agentsquare-ops-v1",
+  "schemaVersion": 39,
+  "panels": [
+    {
+      "id": 1,
+      "title": "Round Clear Duration (seconds)",
+      "type": "timeseries",
+      "targets": [{ "expr": "agentsquare_round_clear_duration_seconds" }]
+    },
+    {
+      "id": 2,
+      "title": "Round Lag (seconds)",
+      "type": "gauge",
+      "targets": [{ "expr": "agentsquare_round_lag_seconds" }]
+    },
+    {
+      "id": 3,
+      "title": "Orders Total by Result",
+      "type": "timeseries",
+      "targets": [{ "expr": "agentsquare_orders_total" }]
+    },
+    {
+      "id": 4,
+      "title": "Ledger Head Sequence & Bytes",
+      "type": "stat",
+      "targets": [
+        { "expr": "agentsquare_ledger_head_seq" },
+        { "expr": "agentsquare_ledger_bytes" }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Raft State & Leader Changes",
+      "type": "stat",
+      "targets": [
+        { "expr": "agentsquare_raft_state" },
+        { "expr": "agentsquare_raft_leader_changes_total" }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Escrow Locked by Asset",
+      "type": "bargauge",
+      "targets": [{ "expr": "agentsquare_escrow_locked" }]
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+version: "3.9"
+
+services:
+  agentsquare-node1:
+    build: .
+    command:
+      - serve
+      - --addr=:8080
+      - --ledger=/data/ledger.jsonl
+      - --game-id=city-2026w46
+      - --key-seed=010000000000000000000000000000000000000000000000000000000000005b
+    ports:
+      - "8080:8080"
+    volumes:
+      - node1-data:/data
+
+  agentsquare-node2:
+    build: .
+    command:
+      - serve
+      - --addr=:8081
+      - --ledger=/data/ledger.jsonl
+      - --game-id=city-2026w46
+      - --key-seed=010000000000000000000000000000000000000000000000000000000000005b
+    ports:
+      - "8081:8081"
+    volumes:
+      - node2-data:/data
+
+  agentsquare-node3:
+    build: .
+    command:
+      - serve
+      - --addr=:8082
+      - --ledger=/data/ledger.jsonl
+      - --game-id=city-2026w46
+      - --key-seed=010000000000000000000000000000000000000000000000000000000000005b
+    ports:
+      - "8082:8082"
+    volumes:
+      - node3-data:/data
+
+  postgres-projection:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: agentsquare
+      POSTGRES_PASSWORD: agentsquare
+      POSTGRES_DB: agentsquare_readmodel
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+
+  prometheus:
+    image: prom/prometheus:v2.54.0
+    volumes:
+      - ./ops/alerts.yml:/etc/prometheus/alerts.yml:ro
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:11.2.0
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./ops/grafana-dashboard.json:/var/lib/grafana/dashboards/agentsquare.json:ro
+
+volumes:
+  node1-data:
+  node2-data:
+  node3-data:
+  pg-data:
